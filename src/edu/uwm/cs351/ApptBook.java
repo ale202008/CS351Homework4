@@ -1,6 +1,11 @@
 // This is an assignment for students to complete after reading Chapter 3 of
 // "Data Structures and Other Objects Using Java" by Michael Main.
 
+/*
+ * Andrew Le
+ * Homework 4
+ */
+
 package edu.uwm.cs351;
 
 import java.util.function.Consumer;
@@ -21,11 +26,30 @@ public class ApptBook implements Cloneable {
 	// The constructor should take an Appointment and a Node.
 	// The fields of Node should have "default" access (neither public, nor private)
 	// and should not start with underscores.
+	
+	/*
+	 * Created the Node class and declared the fields for the program
+	 * from textbook page 233.
+	 */
+	
+	private static class Node {
+		Appointment[] data;
+		int next;
+		
+		public Node(Appointment o, Node n) {
+			
+		}
+	}
 
 	
 	// TODO: Declare the private fields of ApptBook needed for sequences
 	// (in the textbook, page 233 (3rd ed. 226), five are recommended, 
 	//  you should declare all but tail, which is redundant.)
+	
+	private int manyNodes;
+	private int cursor;
+	private int precursor;
+	Node head;
 
 	private static Consumer<String> reporter = (s) -> { System.err.println("Invariant error: " + s); };
 	
@@ -33,6 +57,7 @@ public class ApptBook implements Cloneable {
 		reporter.accept(error);
 		return false;
 	}
+	
 
 	private boolean wellFormed() {
 		// Check the invariant.
@@ -92,6 +117,8 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of size";
 		// TODO: Implemented by student.
+		return manyNodes;
+		
 	}
 
 	/**
