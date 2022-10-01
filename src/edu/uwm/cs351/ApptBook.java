@@ -33,8 +33,8 @@ public class ApptBook implements Cloneable {
 	 */
 	
 	private static class Node {
-		Appointment[] data;
-		int next;
+		Appointment data;
+		Node next;
 		
 		public Node(Appointment o, Node n) {
 			
@@ -47,8 +47,8 @@ public class ApptBook implements Cloneable {
 	//  you should declare all but tail, which is redundant.)
 	
 	private int manyNodes;
-	private int cursor;
-	private int precursor;
+	private Node cursor;
+	private Node precursor;
 	Node head;
 
 	private static Consumer<String> reporter = (s) -> { System.err.println("Invariant error: " + s); };
@@ -109,13 +109,12 @@ public class ApptBook implements Cloneable {
 		/*
 		 * Set manyNodes to 0 as calling for this constructor doesn't add any
 		 * elements. Head is null as there is no elements inside the linked
-		 * list. For now, I am going to set cursor to 0 and precursor to 
-		 * cursor - 1 as to represent their positions when the array is empty.
+		 * list. Replaced the int field of cursor and precursor for the Node field.
 		 */
 		manyNodes = 0;
 		head = null;
-		cursor = 0;
-		precursor = cursor - 1;
+		cursor = head;
+		precursor = cursor;
 		
 		
 		assert wellFormed() : "invariant failed at end of constructor";
