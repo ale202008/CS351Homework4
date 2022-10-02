@@ -221,6 +221,11 @@ public class ApptBook implements Cloneable {
 	public boolean isCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of isCurrent";
+		if (cursor == null) {
+			return false;
+		}
+		else
+			return true;
 		// TODO: Implemented by student.
 	}
 
@@ -238,6 +243,7 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of getCurrent";
 		// TODO: Implemented by student.
+		return this.cursor.data;
 		// Don't change "this" object!
 	}
 
