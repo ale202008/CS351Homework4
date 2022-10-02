@@ -102,91 +102,57 @@ public class ApptBook implements Cloneable {
 		 * attempt to later.
 		 */
 		
-		
-
-//		if (manyNodes < 0) {
-//			return report("manyNodes is less than 0 or head is null.");
-//		}
-//		else if ((cursor != null || head != null) && manyNodes == 0){
-//			return report("Cursor or head is not null, but manyNodes is still 0");
-//		}
-//		else {
-//			int count = 0;
-//			for (Node i = head; i != null && count < manyNodes; i = i.next) {
-//				if (i != null) {
-//					count++;
-//				}
-//			}
-//			if (manyNodes != count) {
-//				return report("manyNodes does not equal the elements within the list.");
-//			}
-//		}
-//		
-//		
-//		if (head != null) {
-//			if (head.data == null) {
-//				return report("There exists null data at head.");
-//			}
-//			Node temp = head.next;
-//			for (Node i = head; i != null && i.next != null; i = i.next) {
-//				if (i.data == null) {
-//					return report("There exists a Node with null data.");
-//				}
-//				else if (i.data.compareTo(i.next.data) > 0) {
-//					return report("There exists a node that is greater than the node after it.");
-//				}
-//				temp = temp.next.next;
-//			}
-//		}
-//		
-//		if (head != null) {
-//			if (precursor != null && precursor.data.compareTo(head.data) < 0) {
-//				return report("Precursor is not null and does not point towards cursor.");
-//			}
-//		}
-//		
-//		if (precursor == null) {
-//			if (head != cursor) {
-//				return report("Precursor is null, but cursor is not the first element.");
-//			}
-//		}
-//		else if (precursor != null) {
-//			if (cursor != precursor.next || precursor.next == null) {
-//				return report("Precursor is not null, but cursor is null which is impossible.");
-//			}
-//		}
-		
 		if (manyNodes < 0) {
 			return report("manyNodes cannot be less than 0.");
 		}
+		else if ((cursor != null || head != null || precursor != null) && manyNodes == 0){
+			return report("Cursor, head, or precursor are not null but manyNodes is still 0");
+		}
 		else {
 			int count = 0;
-			for (Node i = head; i != null && i.next != null; i = i.next) {
+			for (Node i = head; i != null; i = i.next) {
 				if (i != null) {
 					count++;
 				}
-			}
-			if (head != null && head.next == null) {
-				count++;
 			}
 			if (count != manyNodes) {
 				return report("manyNodes does not equal the amount of elements.");
 			}
 		}
 		
-		for (Node i = head; i != null && i.next != null; i = i.next) {
-			if (i.data == null) {
-				return report("There exists a Node with null data.");
+		if (manyNodes != 0) {
+			for (Node i = head; i != null && i.next != null; i = i.next) {
+				if (i.data == null) {
+					return report("There exists a Node with null data.");
+				}
+				if (i.data.compareTo(i.next.data) > 0) {
+					return report("The previous Node is greater or not equal to the next Node");
+				}
 			}
-			if (i.data.compareTo(i.next.data) > 0) {
-				return report("The previous Node is greater or not equal to the next Node");
+			if (head.data == null) {
+				return report("head.data is null");
 			}
+			
 		}
-		
+
 		if (precursor != null) {
 			if (precursor.data.compareTo(head.data) < 0) {
 				return report("The precursor does not point to anywhere when it is not null.");
 			}
+		}
+		
+		if (precursor == null) {
+			if (cursor != head && head != null) {
+				return report("The cursor is not the first node when the precursor is null.");
+			}
+		}
+		else if (precursor == head && head.next == null){
+			if (precursor.next != cursor && cursor != null) {
+				return report("The cursor is not the node after precursor when it is not null");
+			}
+		}
+		else if (precursor.next == null) {
+			return report("fail");
 		}
 
 
