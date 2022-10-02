@@ -37,7 +37,8 @@ public class ApptBook implements Cloneable {
 		Node next;
 		
 		public Node(Appointment o, Node n) {
-			
+			data = o;
+			next = n;
 		}
 	}
 
@@ -81,6 +82,7 @@ public class ApptBook implements Cloneable {
 		
 		// We do the first one for you:
 		// check that list is not cyclic
+		
 		if (head != null) {
 			// This check uses the "tortoise and hare" algorithm attributed to Floyd.
 			Node fast = head.next;
@@ -91,6 +93,67 @@ public class ApptBook implements Cloneable {
 		}
 		
 		// Implement remaining conditions.
+		
+		/*
+		 * Implemented manyNodes invariant; however, it uses many if-else statements
+		 * due to the different cases that can occur. Probably can be shortened, will
+		 * attempt to later.
+		 */
+		
+		
+		if (manyNodes != 0) {
+			if (manyNodes < 0 || head == null) {
+				return report("manyNodes is less than 0 or head is null.");
+			}
+			else if (manyNodes > 0 && head != null) {
+				int count = 0;
+				Node temp = head.next;
+				for (Node i = head; temp != null && temp.next != null; i = i.next) {
+					if (i != null) {
+						count++;
+					}
+				}
+				if (manyNodes != count) {
+					return report("manyNodes does not equal the elements within the list.");
+				}
+			}
+
+		}
+		else if ((cursor != null || head != null) && manyNodes == 0){
+			return report("Cursor or head is not null, but manyNodes is still 0");
+		}
+		
+		
+		if (head != null) {
+			Node temp = head.next;
+			for (Node i = head; temp != null && temp.next != null; i = i.next) {
+				if (i == null) {
+					return report("There exists a null Node.");
+				}
+				else if (i.data.compareTo(i.next.data) > 0) {
+					return report("There exists a node that is greater than the node after it.");
+				}
+				temp = temp.next.next;
+			}
+		}
+		
+		if (head != null) {
+			if (precursor != null || precursor.next != cursor) {
+				return report("Precursor is not null and does not point towards cursor.");
+			}
+		}
+
+		
+		if (head != null) {
+			if (cursor != null) {
+				if (cursor != precursor.next && precursor != null) {
+					return report("Cursor is not after precursor when it is not null and cursor is not null.");
+				}
+			}
+		}
+
+		
+		
 		
 		// If no problems found, then return true:
 		return true;
@@ -144,6 +207,7 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of start";
 		// TODO: Implemented by student.
+		cursor = head;
 		assert wellFormed() : "invariant failed at end of start";
 	}
 
