@@ -121,12 +121,16 @@ public class ApptBook implements Cloneable {
 		}
 		
 		if (manyNodes != 0) {
-			for (Node i = head; i != null && i.next != null; i = i.next) {
+			for (Node i = head; i != null; i = i.next) {
 				if (i.data == null) {
 					return report("There exists a Node with null data.");
 				}
-				if (i.data.compareTo(i.next.data) > 0) {
-					return report("The previous Node is greater or not equal to the next Node");
+				if (i.data != null && i.next != null) {
+					if(i.data != null && i.next.data != null) {
+						if (i.data.compareTo(i.next.data) > 0) {
+							return report("The previous Node is greater or not equal to the next Node");
+						}
+					}
 				}
 			}
 			if (head.data == null) {
@@ -136,9 +140,24 @@ public class ApptBook implements Cloneable {
 		}
 
 		if (precursor != null) {
-			if (precursor.data.compareTo(head.data) < 0) {
-				return report("The precursor does not point to anywhere when it is not null.");
+			if (precursor != head) {
+				if (head.next == null) {
+					return report("head.next is null and precursor is not pointing to head, so cannot find precursor.");
+				}
+				else if (head.next != null) {
+					boolean y = false;
+					for (Node i = head; i != null; i = i.next) {
+						if (precursor == i) {
+							y = true;
+							break;
+						}
+					}
+					if (!y) {
+						return report("precursor not in list.");
+					}
+				}
 			}
+
 		}
 		
 		if (precursor == null) {
@@ -151,8 +170,11 @@ public class ApptBook implements Cloneable {
 				return report("The cursor is not the node after precursor when it is not null");
 			}
 		}
-		else if (precursor.next == null) {
-			return report("fail");
+		else if (precursor.next != null && cursor == null) {
+			return report("precursor.next exists yet cursor is null.");
+		}
+		else if (cursor != null && precursor.next != cursor) {
+			return report("cursor is not the node after precursor, but exists.");
 		}
 
 
