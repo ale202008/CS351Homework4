@@ -10,6 +10,8 @@ package edu.uwm.cs351;
 
 import java.util.function.Consumer;
 
+import org.w3c.dom.Node;
+
 import junit.framework.TestCase;
 
 /******************************************************************************
@@ -101,56 +103,92 @@ public class ApptBook implements Cloneable {
 		 */
 		
 		
-		if (manyNodes != 0) {
-			if (manyNodes < 0 || head == null) {
-				return report("manyNodes is less than 0 or head is null.");
-			}
-			else if (manyNodes > 0 && head != null) {
-				int count = 0;
-				Node temp = head.next;
-				for (Node i = head; temp != null && temp.next != null; i = i.next) {
-					if (i != null) {
-						count++;
-					}
-				}
-				if (manyNodes != count) {
-					return report("manyNodes does not equal the elements within the list.");
-				}
-			}
 
-		}
-		else if ((cursor != null || head != null) && manyNodes == 0){
-			return report("Cursor or head is not null, but manyNodes is still 0");
-		}
+//		if (manyNodes < 0) {
+//			return report("manyNodes is less than 0 or head is null.");
+//		}
+//		else if ((cursor != null || head != null) && manyNodes == 0){
+//			return report("Cursor or head is not null, but manyNodes is still 0");
+//		}
+//		else {
+//			int count = 0;
+//			for (Node i = head; i != null && count < manyNodes; i = i.next) {
+//				if (i != null) {
+//					count++;
+//				}
+//			}
+//			if (manyNodes != count) {
+//				return report("manyNodes does not equal the elements within the list.");
+//			}
+//		}
+//		
+//		
+//		if (head != null) {
+//			if (head.data == null) {
+//				return report("There exists null data at head.");
+//			}
+//			Node temp = head.next;
+//			for (Node i = head; i != null && i.next != null; i = i.next) {
+//				if (i.data == null) {
+//					return report("There exists a Node with null data.");
+//				}
+//				else if (i.data.compareTo(i.next.data) > 0) {
+//					return report("There exists a node that is greater than the node after it.");
+//				}
+//				temp = temp.next.next;
+//			}
+//		}
+//		
+//		if (head != null) {
+//			if (precursor != null && precursor.data.compareTo(head.data) < 0) {
+//				return report("Precursor is not null and does not point towards cursor.");
+//			}
+//		}
+//		
+//		if (precursor == null) {
+//			if (head != cursor) {
+//				return report("Precursor is null, but cursor is not the first element.");
+//			}
+//		}
+//		else if (precursor != null) {
+//			if (cursor != precursor.next || precursor.next == null) {
+//				return report("Precursor is not null, but cursor is null which is impossible.");
+//			}
+//		}
 		
-		
-		if (head != null) {
-			Node temp = head.next;
-			for (Node i = head; temp != null && temp.next != null; i = i.next) {
-				if (i == null) {
-					return report("There exists a null Node.");
+		if (manyNodes < 0) {
+			return report("manyNodes cannot be less than 0.");
+		}
+		else {
+			int count = 0;
+			for (Node i = head; i != null && i.next != null; i = i.next) {
+				if (i != null) {
+					count++;
 				}
-				else if (i.data.compareTo(i.next.data) > 0) {
-					return report("There exists a node that is greater than the node after it.");
-				}
-				temp = temp.next.next;
+			}
+			if (head != null && head.next == null) {
+				count++;
+			}
+			if (count != manyNodes) {
+				return report("manyNodes does not equal the amount of elements.");
 			}
 		}
 		
-		if (head != null) {
-			if (precursor != null || precursor.next != cursor) {
-				return report("Precursor is not null and does not point towards cursor.");
+		for (Node i = head; i != null && i.next != null; i = i.next) {
+			if (i.data == null) {
+				return report("There exists a Node with null data.");
+			}
+			if (i.data.compareTo(i.next.data) > 0) {
+				return report("The previous Node is greater or not equal to the next Node");
+			}
+		}
+		
+		if (precursor != null) {
+			if (precursor.data.compareTo(head.data) < 0) {
+				return report("The precursor does not point to anywhere when it is not null.");
 			}
 		}
 
-		
-		if (head != null) {
-			if (cursor != null) {
-				if (cursor != precursor.next && precursor != null) {
-					return report("Cursor is not after precursor when it is not null and cursor is not null.");
-				}
-			}
-		}
 
 		
 		
