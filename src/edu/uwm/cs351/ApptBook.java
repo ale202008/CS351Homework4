@@ -303,33 +303,11 @@ public class ApptBook implements Cloneable {
 		// TODO: Implemented by student.
 		
 		/*
-		 * This should check first if there is a current element, and if there is
-		 * then check if the cursor is pointing to null which should mean that the
-		 * there does not exist a node after this one, so run these two cases.
-		 * Similar note in removeCurrent(), used an easier and probably the correct way
-		 * to set nodes to each other.
+		 * Realized this can be heavily shortened.
 		 */
 		if (isCurrent()) {
-			if (cursor.next == null) {
-				if (precursor == null) {
-					precursor = head;
-					cursor = null;
-				}
-				else {
-					precursor = cursor;
-					cursor = null;
-				}
-			}
-			else {
-				if (precursor == null) {
-					precursor = head;
-					cursor = cursor.next;
-				}
-				else {
-					precursor = cursor;
-					cursor = cursor.next;
-				}
-			}
+			precursor = cursor;
+			cursor = cursor.next;
 		}
 		else
 			throw new IllegalStateException();
