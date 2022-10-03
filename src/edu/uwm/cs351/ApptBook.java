@@ -452,13 +452,11 @@ public class ApptBook implements Cloneable {
 			for (Node p = head; p != null; p = p.next) {
 				if (p.next == cursor) {
 					precursor = p;
+					break;
 				}
 			}
 		}
 			
-		
-		
-
 		assert wellFormed() : "invariant failed at end of insert";
 	}
 
@@ -484,9 +482,28 @@ public class ApptBook implements Cloneable {
 		// TODO: Implemented by student.
 		// Watch out for the this==addend case!
 		// Cloning the addend is an easy way to avoid problems.
-		 ApptBook addenClone = addend;
-		 
-		 
+		
+		/*
+		 * Followed the similar code used in Homework 2, but adapted to nodes
+		 * using a for loop to iterate through the addendClone nodes and
+		 * passing their data fields to the insert method.
+		 */
+		if (addend == null) {
+			throw new NullPointerException();
+		}
+		
+		if (addend.size() == 0) {
+			return;
+		}
+			
+		ApptBook addendClone = addend;
+		
+		for (Node i = addendClone.head; i != null; i = i.next) {
+			this.insert(i.data);
+		}
+		
+
+		
 		assert wellFormed() : "invariant failed at end of insertAll";
 		assert addend.wellFormed() : "invariant of addend broken in insertAll";
 	}
