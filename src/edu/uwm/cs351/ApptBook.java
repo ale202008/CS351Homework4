@@ -498,11 +498,13 @@ public class ApptBook implements Cloneable {
 			
 		ApptBook addendClone = addend;
 		
+		if (addend == this) {
+			addendClone = addend.clone();
+		}
+		
 		for (Node i = addendClone.head; i != null; i = i.next) {
 			this.insert(i.data);
 		}
-		
-
 		
 		assert wellFormed() : "invariant failed at end of insertAll";
 		assert addend.wellFormed() : "invariant of addend broken in insertAll";
@@ -533,6 +535,25 @@ public class ApptBook implements Cloneable {
 	
 		// Much more work than in Homework #2 or #3!
 		// TODO: Copy the list
+
+		answer.head = new Node(this.head.data, null);
+		answer.precursor = answer.head;
+		answer.cursor = null;
+		
+		for (Node i = this.head; i != null; i = i.next) {
+			if (i.next != null) {
+				answer.insert(i.data);
+			}
+		}
+		
+		
+		if (this.isCurrent()) {
+			answer.start();
+			answer.setCurrent(this.getCurrent());
+		}
+
+		
+		
 		// (make sure cursor/precursor are updated too!)
 	
 		assert wellFormed() : "invariant failed at end of clone";
