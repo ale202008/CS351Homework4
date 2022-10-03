@@ -299,14 +299,8 @@ public class ApptBook implements Cloneable {
 		 * This should check first if there is a current element, and if there is
 		 * then check if the cursor is pointing to null which should mean that the
 		 * there does not exist a node after this one, so run these two cases.
-		 * Case1 : if precursor is null meaning that cursor was at the first element
-		 * and there does not exist any element after so make precursor into a new node 
-		 * with cursor's data and next and set cursor to null.
-		 * Case2 : if precursor is not null meaning that precursor had a node already
-		 * just set data and next to cursor's data and next, then set it to null.
-		 * Case3: if cursor.next does not equal null meaning there exists an element
-		 * after the cursor to move to, set precursor data and next to cursor's current
-		 * data and next, and then switch cursor's data and next to the next element.
+		 * Similar note in removeCurrent(), used an easier and probably the correct way
+		 * to set nodes to each other.
 		 */
 		if (isCurrent()) {
 			if (cursor.next == null) {
@@ -355,40 +349,35 @@ public class ApptBook implements Cloneable {
 		/*
 		 * Similar to the advance method we are checking to see if there does
 		 * exist an element after the cursor.
-		 * Case1 : There is no element and precursor is null, meaning that there was
-		 * only 1 element, so just set cursor to null and precursor to cursor's data
-		 * and next before setting it to null.
-		 * Case2: There exists no element after cursor, but there does exist a precursor
-		 * so just make cursor null as precursor should be in the position before the removal
-		 * of cursor and as such should be wellFormed in the case of precursor = the last node
-		 * of the list in the case of no current element.
-		 * Case3: There does exist an element after the cursor and precursor is null, meaning
-		 * cursor was at the beginning of the list so just change cursor's data and next.
-		 * Case4: There does exist and element after cursor and precursor is an existing element
-		 * so just set precursor.next to cursor.next to that we can have precursor already pointing
-		 * to the new cursor. Then, set cursor.data and cursor.next to the next elements data and next.
+		 * Changed any statements that would change the data or next fields
+		 * to simply have the Node = node.next. Easier, faster, and I can't
+		 * believe I didn't use it first.
 		 */
 		if (isCurrent()) {
 			if (cursor.next == null) {
 				if (precursor == null) {
-					precursor = new Node(cursor.data, cursor.next);
+					head = null;
 					cursor = null;
 					manyNodes--;
 				}
 				else {
 					cursor = null;
+					precursor.next = null;
 					manyNodes--;
 				}
 			}
 			else {
 				if (precursor == null) {
-					cursor.data = cursor.next.data;
-					cursor.next = cursor.next.next;
+					precursor = cursor;
+					cursor = cursor.next;
+					head = cursor;
+					precursor = null;
+					manyNodes--;
 				}
 				else {
 					precursor.next = cursor.next;
-					cursor.data = cursor.next.data;
-					cursor.next = cursor.next.next;
+					cursor = cursor.next;
+					manyNodes--;
 				}
 			}
 
@@ -433,8 +422,8 @@ public class ApptBook implements Cloneable {
 		// TODO: Implemented by student.
 		
 		/*
-		 * Used online lecture notes for code and only minor changes
-		 * for certain cases.
+		 * Used online lecture notes for help with the
+		 * code and only minor changes for certain cases.
 		 */
 		
 		if (element == null) {
@@ -495,6 +484,9 @@ public class ApptBook implements Cloneable {
 		// TODO: Implemented by student.
 		// Watch out for the this==addend case!
 		// Cloning the addend is an easy way to avoid problems.
+		 ApptBook addenClone = addend;
+		 
+		 
 		assert wellFormed() : "invariant failed at end of insertAll";
 		assert addend.wellFormed() : "invariant of addend broken in insertAll";
 	}
