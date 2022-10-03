@@ -246,12 +246,12 @@ public class ApptBook implements Cloneable {
 	public boolean isCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of isCurrent";
+		// TODO: Implemented by student.
 		if (cursor == null) {
 			return false;
 		}
 		else
 			return true;
-		// TODO: Implemented by student.
 	}
 
 	/**
@@ -311,20 +311,23 @@ public class ApptBook implements Cloneable {
 		if (isCurrent()) {
 			if (cursor.next == null) {
 				if (precursor == null) {
-					precursor = new Node(cursor.data, cursor.next);
+					precursor = head;
 					cursor = null;
 				}
 				else {
-					precursor.data = cursor.data;
-					precursor.next = cursor.next;
+					precursor = cursor;
 					cursor = null;
 				}
 			}
 			else {
-				precursor.data = cursor.data;
-				precursor.next = cursor.next;
-				cursor.data = cursor.next.data;
-				cursor.next = cursor.next.next;
+				if (precursor == null) {
+					precursor = head;
+					cursor = cursor.next;
+				}
+				else {
+					precursor = cursor;
+					cursor = cursor.next;
+				}
 			}
 		}
 		else
@@ -429,14 +432,44 @@ public class ApptBook implements Cloneable {
 		assert wellFormed() : "invariant failed at start of insert";
 		// TODO: Implemented by student.
 		
+		/*
+		 * Used online lecture notes for code and only minor changes
+		 * for certain cases.
+		 */
+		
 		if (element == null) {
 			throw new IllegalArgumentException();
 		}
 		
-
-
+		if (head == null || head.data.compareTo(element) > 0)  {
+			head = new Node(element, head);
+			manyNodes++;
+			if (manyNodes == 1) {
+				precursor = head;
+			}
+		}
+		else {
+			Node i;
+			for (i = head; i.next != null; i = i.next) {
+				if(i.next.data.compareTo(element) > 0) {
+					break;
+				}
+			}
+			i.next = new Node(element, i.next);
+			manyNodes++;
+		}
+		
+		if (cursor != head) {
+			for (Node p = head; p != null; p = p.next) {
+				if (p.next == cursor) {
+					precursor = p;
+				}
+			}
+		}
+			
 		
 		
+
 		assert wellFormed() : "invariant failed at end of insert";
 	}
 
