@@ -172,11 +172,6 @@ public class ApptBook implements Cloneable {
 				return report("The cursor is not the first node when the precursor is null.");
 			}
 		}
-		else if (precursor == head && head.next == null){
-			if (precursor.next != cursor && cursor != null) {
-				return report("The cursor is not the node after precursor when it is not null");
-			}
-		}
 		else if (precursor.next != null && cursor == null) {
 			return report("precursor.next exists yet cursor is null.");
 		}
