@@ -177,10 +177,6 @@ public class ApptBook implements Cloneable {
 			return report("cursor is not the node after precursor, but exists.");
 		}
 
-
-		
-		
-		
 		// If no problems found, then return true:
 		return true;
 	}
@@ -234,6 +230,9 @@ public class ApptBook implements Cloneable {
 		assert wellFormed() : "invariant failed at start of start";
 		// TODO: Implemented by student.
 		cursor = head;
+		if (precursor != null) {
+			precursor = null;
+		}
 		assert wellFormed() : "invariant failed at end of start";
 	}
 
@@ -269,7 +268,11 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of getCurrent";
 		// TODO: Implemented by student.
-		return this.cursor.data;
+		if (isCurrent()) {
+			return cursor.data;
+		}
+		else
+			throw new IllegalStateException();
 		// Don't change "this" object!
 	}
 
@@ -291,6 +294,18 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of advance";
 		// TODO: Implemented by student.
+		if (isCurrent()) {
+			if(cursor.next == null) {
+				precursor = new Node(cursor.data, cursor.next);
+				cursor = null;
+			}
+			else {
+				cursor.data = cursor.next.data;
+				cursor.next = cursor.next.next;
+			}
+		}
+		else
+			throw new IllegalStateException();
 		assert wellFormed() : "invariant failed at end of advance";
 	}
 
@@ -311,6 +326,20 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of removeCurrent";
 		// TODO: Implemented by student.
+		if (isCurrent()) {
+			if(cursor.next == null) {
+				precursor.data = cursor.data;
+				precursor.next = null;
+				cursor = null;
+			}
+			else {
+				cursor.data = cursor.next.data;
+				cursor.next = cursor.next.next;
+				precursor.next = cursor;
+			}
+		}
+		else
+			throw new IllegalStateException();
 		assert wellFormed() : "invariant failed at end of removeCurrent";
 	}
 	
@@ -321,11 +350,13 @@ public class ApptBook implements Cloneable {
 	 */
 	public void setCurrent(Appointment guide) {
 		assert wellFormed() : "invariant failed at start of setCurrent";
+		
 		if (guide == null) throw new NullPointerException("guide cannot be null");
 		start();
 		while (isCurrent() && getCurrent().compareTo(guide) < 0) {
 			advance();
 		}
+		
 		assert wellFormed() : "invariant failed at end of setCurrent";
 	}
 
@@ -345,6 +376,33 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of insert";
 		// TODO: Implemented by student.
+		
+		if (element == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		if (manyNodes == 0) {
+			head = new Node(element, null);
+			precursor = head;
+			manyNodes++;
+		}
+		else {
+			if (manyNodes > 1) {
+				for (Node i = head; i != null; i = i.next) {
+					if (i != null && i.next != null) {
+						if (element.compareTo(i.data) >= 0 && element.compareTo(i.next.data) < 0) {
+							Node nodeElement = new Node(element, i.next);
+							i.next = nodeElement;
+							manyNodes++;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		
+		
 		assert wellFormed() : "invariant failed at end of insert";
 	}
 
