@@ -14,6 +14,13 @@ import org.w3c.dom.Node;
 
 import junit.framework.TestCase;
 
+/*
+ * Andrew Le
+ * Homework 4
+ * Had some help from Max Dreher in pointing out material in the text book
+ * that I could use. Did not copy, look, or use any of Max Dreher's code.
+ */
+
 /******************************************************************************
  * This class is a homework assignment;
  * An ApptBook ("book" for short) is a sequence of Appointment objects in sorted order.
@@ -535,15 +542,25 @@ public class ApptBook implements Cloneable {
 	
 		// Much more work than in Homework #2 or #3!
 		// TODO: Copy the list
-
-		answer.head = new Node(this.head.data, null);
+		
+		/*
+		 * Basically, I reset answer to be a blank, empty list and use
+		 * a similar for-loop in insertAll method to copy over the nodes.
+		 * Then I check if this.isCurrent is true, and if it is use answer.start()
+		 * to begin the current element existence and the setCurrent to find the 
+		 * node with the same value.
+		 * There is a probably case of if there exists any duplicates to find the last
+		 * instance of that duplicate and set it at the end, but I will not include it
+		 * until necessary.
+		 */
+		
+		answer.manyNodes = 0;
+		answer.head = null;
+		answer.cursor = answer.head;
 		answer.precursor = answer.head;
-		answer.cursor = null;
 		
 		for (Node i = this.head; i != null; i = i.next) {
-			if (i.next != null) {
-				answer.insert(i.data);
-			}
+			answer.insert(i.data);
 		}
 		
 		
