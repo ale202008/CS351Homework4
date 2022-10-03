@@ -294,12 +294,35 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of advance";
 		// TODO: Implemented by student.
+		
+		/*
+		 * This should check first if there is a current element, and if there is
+		 * then check if the cursor is pointing to null which should mean that the
+		 * there does not exist a node after this one, so run these two cases.
+		 * Case1 : if precursor is null meaning that cursor was at the first element
+		 * and there does not exist any element after so make precursor into a new node 
+		 * with cursor's data and next and set cursor to null.
+		 * Case2 : if precursor is not null meaning that precursor had a node already
+		 * just set data and next to cursor's data and next, then set it to null.
+		 * Case3: if cursor.next does not equal null meaning there exists an element
+		 * after the cursor to move to, set precursor data and next to cursor's current
+		 * data and next, and then switch cursor's data and next to the next element.
+		 */
 		if (isCurrent()) {
-			if(cursor.next == null) {
-				precursor = new Node(cursor.data, cursor.next);
-				cursor = null;
+			if (cursor.next == null) {
+				if (precursor == null) {
+					precursor = new Node(cursor.data, cursor.next);
+					cursor = null;
+				}
+				else {
+					precursor.data = cursor.data;
+					precursor.next = cursor.next;
+					cursor = null;
+				}
 			}
 			else {
+				precursor.data = cursor.data;
+				precursor.next = cursor.next;
 				cursor.data = cursor.next.data;
 				cursor.next = cursor.next.next;
 			}
@@ -326,17 +349,46 @@ public class ApptBook implements Cloneable {
 	{
 		assert wellFormed() : "invariant failed at start of removeCurrent";
 		// TODO: Implemented by student.
+		/*
+		 * Similar to the advance method we are checking to see if there does
+		 * exist an element after the cursor.
+		 * Case1 : There is no element and precursor is null, meaning that there was
+		 * only 1 element, so just set cursor to null and precursor to cursor's data
+		 * and next before setting it to null.
+		 * Case2: There exists no element after cursor, but there does exist a precursor
+		 * so just make cursor null as precursor should be in the position before the removal
+		 * of cursor and as such should be wellFormed in the case of precursor = the last node
+		 * of the list in the case of no current element.
+		 * Case3: There does exist an element after the cursor and precursor is null, meaning
+		 * cursor was at the beginning of the list so just change cursor's data and next.
+		 * Case4: There does exist and element after cursor and precursor is an existing element
+		 * so just set precursor.next to cursor.next to that we can have precursor already pointing
+		 * to the new cursor. Then, set cursor.data and cursor.next to the next elements data and next.
+		 */
 		if (isCurrent()) {
-			if(cursor.next == null) {
-				precursor.data = cursor.data;
-				precursor.next = null;
-				cursor = null;
+			if (cursor.next == null) {
+				if (precursor == null) {
+					precursor = new Node(cursor.data, cursor.next);
+					cursor = null;
+					manyNodes--;
+				}
+				else {
+					cursor = null;
+					manyNodes--;
+				}
 			}
 			else {
-				cursor.data = cursor.next.data;
-				cursor.next = cursor.next.next;
-				precursor.next = cursor;
+				if (precursor == null) {
+					cursor.data = cursor.next.data;
+					cursor.next = cursor.next.next;
+				}
+				else {
+					precursor.next = cursor.next;
+					cursor.data = cursor.next.data;
+					cursor.next = cursor.next.next;
+				}
 			}
+
 		}
 		else
 			throw new IllegalStateException();
@@ -381,25 +433,7 @@ public class ApptBook implements Cloneable {
 			throw new IllegalArgumentException();
 		}
 		
-		if (manyNodes == 0) {
-			head = new Node(element, null);
-			precursor = head;
-			manyNodes++;
-		}
-		else {
-			if (manyNodes > 1) {
-				for (Node i = head; i != null; i = i.next) {
-					if (i != null && i.next != null) {
-						if (element.compareTo(i.data) >= 0 && element.compareTo(i.next.data) < 0) {
-							Node nodeElement = new Node(element, i.next);
-							i.next = nodeElement;
-							manyNodes++;
-							break;
-						}
-					}
-				}
-			}
-		}
+
 
 		
 		
