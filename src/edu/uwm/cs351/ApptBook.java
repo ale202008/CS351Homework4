@@ -567,6 +567,14 @@ public class ApptBook implements Cloneable {
 		if (this.isCurrent()) {
 			answer.start();
 			answer.setCurrent(this.getCurrent());
+			
+			while (this.cursor.next == null) {
+				if (answer.cursor.next == null) {
+					break;
+				}
+				else
+					answer.advance();
+			}
 		}
 
 		
